@@ -652,7 +652,8 @@
             mySecretWord: '',
             wordLength: 5,
             winnerMessageShown: false,
-            wordLengthMessageSent: false
+            wordLengthMessageSent: false,
+            autoDeleteScheduled: false
         };
         
         // Simple cache for games data
@@ -1122,13 +1123,11 @@
         }
 
         async function deleteGame(gameId) {
-            if (!confirm('Möchtest du dieses Spiel wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.')) {
-                return;
-            }
-            
             try {
                 console.log('Deleting game:', gameId);
                 await database.ref(`games/${gameId}`).remove();
+                await database.ref(`publicGames/${gameId}`).remove();
+                await database.ref(`chat/${gameId}`).remove();
                 console.log('Game deleted successfully');
                 
                 // Invalidate cache since we deleted a game
@@ -1136,9 +1135,6 @@
                 
                 // Reload games list (will use fresh data due to cache invalidation)
                 loadUserGames();
-                
-                // Show success message
-                alert('Spiel erfolgreich gelöscht!');
                 
             } catch (error) {
                 console.error('Error deleting game:', error);
@@ -1258,7 +1254,8 @@
                 mySecretWord: '',
                 wordLength: 5,
                 winnerMessageShown: false,
-                wordLengthMessageSent: false
+                wordLengthMessageSent: false,
+                autoDeleteScheduled: false
             };
             
             showGamesOverview();
@@ -1461,6 +1458,37 @@
                     
                     // Show win notification popup
                     showWinNotification(isWinner, winnerName, gameData);
+                    
+                    // Auto-delete finished game after 30 seconds (only if not already scheduled)
+                    if (!gameState.autoDeleteScheduled) {
+                        gameState.autoDeleteScheduled = true;
+                        console.log('Game finished! Scheduling automatic deletion in 30 seconds...');
+                        
+                        // Add auto-delete notification
+                        const autoDeleteDiv = document.createElement('div');
+                        autoDeleteDiv.className = 'chat-message system';
+                        autoDeleteDiv.textContent = '🗑️ Das Spiel wird in 30 Sekunden automatisch gelöscht.';
+                        chatMessages.appendChild(autoDeleteDiv);
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        
+                        setTimeout(async () => {
+                            console.log('Auto-deleting finished game:', currentGameId);
+                            try {
+                                await database.ref(`games/${currentGameId}`).remove();
+                                await database.ref(`publicGames/${currentGameId}`).remove();
+                                await database.ref(`chat/${currentGameId}`).remove();
+                                console.log('Finished game auto-deleted successfully');
+                                
+                                // Return to lobby
+                                currentGameId = null;
+                                showMainMenu();
+                                invalidateGamesCache();
+                                loadUserGames();
+                            } catch (error) {
+                                console.error('Error auto-deleting finished game:', error);
+                            }
+                        }, 30000); // 30 seconds
+                    }
                 }
                 
             } else if (isMyTurn) {
@@ -1611,6 +1639,7 @@
                     console.log('Player won!');
                     updates[`gameState/winner`] = gameState.playerId;
                     updates[`status`] = 'finished';
+                    updates[`finishedAt`] = Date.now();
                 } else {
                     console.log('Game continues, switching turns...');
                     // Switch turns
@@ -1628,6 +1657,30 @@
                     // Add chat message
                     console.log('Adding chat message...');
                     addChatMessage(`${currentUser.username} rät: ${guess} (${result.blacks} Schwarz, ${result.whites} Weiß)`, 'system');
+                    
+                    // If game is finished, schedule automatic deletion after 30 seconds
+                    if (updates[`status`] === 'finished') {
+                        console.log('Game finished! Scheduling automatic deletion in 30 seconds...');
+                        addChatMessage('🎉 Spiel beendet! Das Spiel wird in 30 Sekunden automatisch gelöscht.', 'system');
+                        
+                        setTimeout(async () => {
+                            console.log('Auto-deleting finished game:', currentGameId);
+                            try {
+                                await database.ref(`games/${currentGameId}`).remove();
+                                await database.ref(`publicGames/${currentGameId}`).remove();
+                                await database.ref(`chat/${currentGameId}`).remove();
+                                console.log('Finished game auto-deleted successfully');
+                                
+                                // Return to lobby
+                                currentGameId = null;
+                                showMainMenu();
+                                invalidateGamesCache();
+                                loadUserGames();
+                            } catch (error) {
+                                console.error('Error auto-deleting finished game:', error);
+                            }
+                        }, 30000); // 30 seconds
+                    }
                     
                 }).catch((error) => {
                     console.error('Error updating Firebase:', error);
@@ -1866,4 +1919,3 @@
     </script>
 </body>
 </html>
-
