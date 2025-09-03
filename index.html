@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schwarz Weiß</title>
     <style>
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Default Theme */
         body {
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -19,6 +21,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            transition: all 0.3s ease;
         }
 
         .container {
@@ -30,6 +33,7 @@
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
+            transition: all 0.3s ease;
         }
 
         h1 {
@@ -38,6 +42,58 @@
             margin-bottom: 30px;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        /* Hacker Theme */
+        body.hacker-theme {
+            font-family: 'Courier New', monospace;
+            background: #000000;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.05) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 30%, rgba(0, 255, 0, 0.02) 50%, transparent 70%);
+            animation: matrix-bg 20s ease-in-out infinite;
+        }
+
+        @keyframes matrix-bg {
+            0%, 100% { background-position: 0% 0%, 100% 100%, 0% 0%; }
+            50% { background-position: 100% 100%, 0% 0%, 100% 100%; }
+        }
+
+        body.hacker-theme .container {
+            background: rgba(0, 20, 0, 0.95);
+            border: 2px solid #00ff00;
+            border-radius: 0;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.3),
+                inset 0 0 20px rgba(0, 255, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        body.hacker-theme h1 {
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            text-shadow: 
+                0 0 10px #00ff00,
+                0 0 20px #00ff00,
+                0 0 30px #00ff00;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        body.hacker-theme h1::before {
+            content: ">> ";
+            color: #00ff41;
+        }
+
+        body.hacker-theme h1::after {
+            content: " <<";
+            color: #00ff41;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
+            to { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff41, 0 0 40px #00ff41; }
         }
 
         /* Login/Register Styles */
@@ -51,6 +107,75 @@
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .auth-form {
+            background: rgba(0, 40, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+
+        /* Theme Selector */
+        .theme-selector {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .theme-selector label {
+            color: #555;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        body.hacker-theme .theme-selector label {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .theme-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .theme-btn {
+            padding: 8px 16px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .theme-btn.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .theme-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        body.hacker-theme .theme-btn {
+            border: 1px solid #00ff00;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            border-radius: 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        body.hacker-theme .theme-btn.active {
+            background: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        body.hacker-theme .theme-btn:hover {
+            box-shadow: 0 0 15px #00ff00;
         }
 
         .form-group {
@@ -62,6 +187,17 @@
             margin-bottom: 5px;
             font-weight: bold;
             color: #555;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme label {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        body.hacker-theme label::before {
+            content: "$ ";
+            color: #00ff41;
         }
 
         input, select, button {
@@ -70,12 +206,31 @@
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme input,
+        body.hacker-theme select {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+        }
+
+        body.hacker-theme input::placeholder {
+            color: rgba(0, 255, 0, 0.6);
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        body.hacker-theme input:focus,
+        body.hacker-theme select:focus {
+            border-color: #00ff41;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
         }
 
         button {
@@ -85,6 +240,21 @@
             cursor: pointer;
             margin-top: 10px;
             font-weight: bold;
+        }
+
+        body.hacker-theme button {
+            background: #000000;
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
+
+        body.hacker-theme button:hover {
+            background: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 15px #00ff00;
         }
 
         button:hover {
@@ -97,6 +267,12 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+
+        body.hacker-theme button:disabled {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: rgba(0, 255, 0, 0.3);
+            color: rgba(0, 255, 0, 0.3);
         }
 
         /* Games Overview */
@@ -112,6 +288,14 @@
             padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .user-info {
+            background: rgba(0, 40, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            color: #00ff00;
         }
 
         .games-grid {
@@ -127,11 +311,30 @@
             border-radius: 10px;
             border: 2px solid #ddd;
             position: relative;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .game-card {
+            background: rgba(0, 20, 0, 0.9);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
 
         .game-card h3 {
             margin-bottom: 10px;
             color: #333;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .game-card h3 {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        body.hacker-theme .game-card h3::before {
+            content: "[GAME] ";
+            color: #00ff41;
         }
 
         .game-card-actions {
@@ -157,10 +360,24 @@
             width: auto !important;
         }
 
+        body.hacker-theme .delete-btn {
+            background: #ff0000 !important;
+            border: 1px solid #ff0000 !important;
+            border-radius: 0 !important;
+            font-family: 'Courier New', monospace !important;
+            text-transform: uppercase !important;
+        }
+
         .delete-btn:hover {
             background: #c82333 !important;
             transform: none !important;
             box-shadow: none !important;
+        }
+
+        body.hacker-theme .delete-btn:hover {
+            background: #000000 !important;
+            color: #ff0000 !important;
+            box-shadow: 0 0 10px #ff0000 !important;
         }
 
         .game-status {
@@ -171,6 +388,10 @@
         .status-waiting { color: #ffa500; }
         .status-active { color: #28a745; }
         .status-finished { color: #6c757d; }
+
+        body.hacker-theme .status-waiting { color: #ffff00; text-shadow: 0 0 5px #ffff00; }
+        body.hacker-theme .status-active { color: #00ff00; text-shadow: 0 0 5px #00ff00; }
+        body.hacker-theme .status-finished { color: #888888; }
 
         /* Game Area */
         .game-container {
@@ -185,6 +406,14 @@
             padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .game-header {
+            background: rgba(0, 40, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            color: #00ff00;
         }
 
         .game-content {
@@ -197,11 +426,25 @@
             background: #f8f9fa;
             padding: 20px;
             border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .player-section {
+            background: rgba(0, 20, 0, 0.9);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
 
         .player-section h3 {
             margin-bottom: 15px;
             color: #333;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .player-section h3 {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
         }
 
         /* Tables */
@@ -216,6 +459,14 @@
             padding: 8px 12px;
             text-align: center;
             border: 1px solid #ddd;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .guess-table th,
+        body.hacker-theme .guess-table td {
+            border: 1px solid #00ff00;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
         }
 
         .guess-table th {
@@ -224,8 +475,19 @@
             font-weight: bold;
         }
 
+        body.hacker-theme .guess-table th {
+            background: #00ff00;
+            color: #000000;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
+
         .guess-table tr:nth-child(even) {
             background-color: #f9f9f9;
+        }
+
+        body.hacker-theme .guess-table tr:nth-child(even) {
+            background-color: rgba(0, 40, 0, 0.5);
         }
 
         .word-cell {
@@ -239,10 +501,22 @@
             font-weight: bold;
         }
 
+        body.hacker-theme .black-cell {
+            background-color: #000000 !important;
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
         .white-cell {
             background-color: #f0f0f0 !important;
             color: #333;
             font-weight: bold;
+        }
+
+        body.hacker-theme .white-cell {
+            background-color: #004400 !important;
+            color: #ffff00;
+            text-shadow: 0 0 5px #ffff00;
         }
 
         /* Chat */
@@ -254,6 +528,14 @@
             height: 300px;
             display: flex;
             flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .chat-container {
+            background: rgba(0, 20, 0, 0.9);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
 
         .chat-messages {
@@ -264,12 +546,20 @@
             padding: 10px;
             margin-bottom: 10px;
             background: white;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .chat-messages {
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            background: rgba(0, 0, 0, 0.9);
         }
 
         .chat-message {
             margin-bottom: 8px;
             padding: 5px 10px;
             border-radius: 5px;
+            transition: all 0.3s ease;
         }
 
         .chat-message.own {
@@ -277,14 +567,33 @@
             text-align: right;
         }
 
+        body.hacker-theme .chat-message.own {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border-left: 2px solid #00ff00;
+        }
+
         .chat-message.other {
             background: #f5f5f5;
+        }
+
+        body.hacker-theme .chat-message.other {
+            background: rgba(0, 40, 0, 0.5);
+            color: #00ff41;
+            border-left: 2px solid #00ff41;
         }
 
         .chat-message.system {
             background: #fff3cd;
             text-align: center;
             font-style: italic;
+        }
+
+        body.hacker-theme .chat-message.system {
+            background: rgba(255, 255, 0, 0.1);
+            color: #ffff00;
+            border: 1px solid #ffff00;
+            text-shadow: 0 0 5px #ffff00;
         }
 
         .chat-input-container {
@@ -307,6 +616,7 @@
             border-radius: 5px;
             margin: 10px 0;
             text-align: center;
+            transition: all 0.3s ease;
         }
 
         .status.success {
@@ -315,16 +625,37 @@
             border: 1px solid #c3e6cb;
         }
 
+        body.hacker-theme .status.success {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
         .status.error {
             background: #f8d7da;
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
 
+        body.hacker-theme .status.error {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+            border: 1px solid #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
         .status.info {
             background: #d1ecf1;
             color: #0c5460;
             border: 1px solid #bee5eb;
+        }
+
+        body.hacker-theme .status.info {
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
+            border: 1px solid #00ffff;
+            text-shadow: 0 0 5px #00ffff;
         }
 
         /* Secret Word Display */
@@ -334,11 +665,24 @@
             border-radius: 10px;
             margin-bottom: 15px;
             text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .secret-word-display {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            color: #00ff00;
         }
 
         .secret-word-display strong {
             color: #1976d2;
             font-size: 1.2em;
+        }
+
+        body.hacker-theme .secret-word-display strong {
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
         }
 
         /* Win Notification */
@@ -356,16 +700,45 @@
             z-index: 1000;
             min-width: 300px;
             animation: winPop 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        body.hacker-theme .win-notification {
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid #00ff00;
+            border-radius: 0;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 0, 0.5),
+                inset 0 0 20px rgba(0, 255, 0, 0.1);
+            color: #00ff00;
         }
 
         .win-notification.lose {
             background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
         }
 
+        body.hacker-theme .win-notification.lose {
+            background: rgba(0, 0, 0, 0.95);
+            border-color: #ff0000;
+            box-shadow: 
+                0 0 30px rgba(255, 0, 0, 0.5),
+                inset 0 0 20px rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+        }
+
         .win-notification h2 {
             margin: 0 0 15px 0;
             font-size: 2.5em;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        body.hacker-theme .win-notification h2 {
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 10px #00ff00;
+        }
+
+        body.hacker-theme .win-notification.lose h2 {
+            text-shadow: 0 0 10px #ff0000;
         }
 
         .win-notification p {
@@ -383,6 +756,20 @@
             letter-spacing: 2px;
         }
 
+        body.hacker-theme .win-notification .secret-word {
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            font-family: 'Courier New', monospace;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        body.hacker-theme .win-notification.lose .secret-word {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+
         .win-notification button {
             background: rgba(255,255,255,0.9);
             color: #333;
@@ -396,9 +783,35 @@
             transition: all 0.3s;
         }
 
+        body.hacker-theme .win-notification button {
+            background: #000000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            border-radius: 0;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
+
+        body.hacker-theme .win-notification.lose button {
+            border-color: #ff0000;
+            color: #ff0000;
+        }
+
         .win-notification button:hover {
             background: white;
             transform: scale(1.05);
+        }
+
+        body.hacker-theme .win-notification button:hover {
+            background: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 15px #00ff00;
+        }
+
+        body.hacker-theme .win-notification.lose button:hover {
+            background: #ff0000;
+            color: #000000;
+            box-shadow: 0 0 15px #ff0000;
         }
 
         .win-overlay {
@@ -453,6 +866,19 @@
 
         <!-- Login/Register Area -->
         <div id="authArea" class="auth-container">
+            <!-- Theme Selector -->
+            <div class="theme-selector">
+                <label>🎨 Theme auswählen:</label>
+                <div class="theme-buttons">
+                    <button type="button" class="theme-btn active" onclick="setTheme('default')">
+                        🌟 Classic
+                    </button>
+                    <button type="button" class="theme-btn" onclick="setTheme('hacker')">
+                        💚 Hacker
+                    </button>
+                </div>
+            </div>
+
             <div class="auth-form">
                 <h2>Anmelden</h2>
                 <div class="form-group">
@@ -654,6 +1080,48 @@
             winnerMessageShown: false,
             wordLengthMessageSent: false
         };
+        
+        // Theme System
+        let currentTheme = 'default';
+        
+        function setTheme(theme) {
+            currentTheme = theme;
+            const body = document.body;
+            
+            // Remove all theme classes
+            body.classList.remove('hacker-theme');
+            
+            // Add new theme class
+            if (theme === 'hacker') {
+                body.classList.add('hacker-theme');
+            }
+            
+            // Update theme buttons
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Set active button
+            const activeBtn = document.querySelector(`[onclick="setTheme('${theme}')"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+            }
+            
+            // Save theme preference
+            localStorage.setItem('schwarz-weiss-theme', theme);
+            
+            console.log(`Theme switched to: ${theme}`);
+        }
+        
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('schwarz-weiss-theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
+        }
+        
+        // Load theme on page load
+        document.addEventListener('DOMContentLoaded', loadTheme);
         
         // Simple cache for games data
         let gamesCache = {
