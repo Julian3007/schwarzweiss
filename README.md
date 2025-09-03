@@ -130,14 +130,11 @@ Bitte erstelle ein [Issue](https://github.com/yourusername/schwarz-weiss-game/is
 - [ ] Mobile App (PWA)
 - [ ] Mehrsprachige Unterstützung
 
-## 📄 Lizenz
-
-Dieses Projekt steht unter der MIT-Lizenz - siehe [LICENSE](LICENSE) Datei für Details.
 
 ## 👨‍💻 Autor
 
-**Julian Meyer**
-- GitHub: [@yourusername](https://github.com/yourusername)
+**Julian3007**
+- GitHub: [@Julian3007](https://github.com/Julian3007)
 
 ## 🙏 Danksagungen
 
@@ -148,3 +145,4 @@ Dieses Projekt steht unter der MIT-Lizenz - siehe [LICENSE](LICENSE) Datei für 
 ---
 
 ⭐ **Gefällt dir das Spiel? Gib dem Repository einen Stern!** ⭐
+
